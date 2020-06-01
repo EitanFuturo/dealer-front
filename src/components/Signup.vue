@@ -6,6 +6,16 @@
         <div class="text-red" v-if="error">{{ error }}</div>
 
         <div class="mb-6">
+          <label for="name" class="label">Name</label>
+          <input type="text" v-model="name" class="input" id="email" placeholder="Justin">
+        </div>
+
+        <div class="mb-6">
+          <label for="last_name" class="label">Last name</label>
+          <input type="text" v-model="last_name" class="input" id="email" placeholder="Bieber">
+        </div>
+
+        <div class="mb-6">
           <label for="email" class="label">E-mail Address</label>
           <input type="email" v-model="email" class="input" id="email" placeholder="andy@web-crunch.com">
         </div>
@@ -33,6 +43,8 @@ export default {
   name: 'Signup',
   data () {
     return {
+      name: '',
+      last_name: '',
       email: '',
       password: '',
       password_confirmation: '',
@@ -46,14 +58,14 @@ export default {
     this.checkSignedIn()
   },
   methods: {
-    signin () {
-      this.$http.plain.post('/signup', { email: this.email, password: this.password, password_confirmation: this.password_confirmation })
-        .then(response => this.signinSuccessful(response))
-        .catch(error => this.signinFailed(error))
+    signup () {
+      this.$http.plain.post('/signup', { name: this.name, last_name: this.last_name, email: this.email, password: this.password, password_confirmation: this.password_confirmation })
+        .then(response => this.signupSuccessful(response))
+        .catch(error => this.signupFailed(error))
     },
-    signinSuccessful (response) {
+    signupSuccessful (response) {
       if (!response.data.csrf) {
-        this.signinFailed(response)
+        this.signupFailed(response)
         return
       }
       localStorage.csrf = response.data.csrf
@@ -61,7 +73,7 @@ export default {
       this.error = ''
       this.$router.replace('/drugs')
     },
-    signinFailed (error) {
+    signupFailed (error) {
       this.error = (error.response && error.response.data && error.response.data.error) || 'Ups!'
       delete localStorage.csrf
       delete localStorage.signedIn

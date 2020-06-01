@@ -1,4 +1,4 @@
-// Agregar frecuency (aunque desde el back no se valide.)
+<!-- eslint-disable -->
 <template>
   <div class="max-w-md m-auto py-10">
     <div class="text-red" v-if="error">{{ error }}</div>
@@ -15,7 +15,7 @@
           v-model="newDrug.name">
       </div>
 
-      <input type=submit" value="Add Drug" class="font-sans font-bold px-4 rounded cursor-pointer no-underline bg-green hover:bg-green-dark block w-full py-4 text-white items-center justify-center"/>
+      <input type="submit" value="Add Drug" class="font-sans font-bold px-4 rounded cursor-pointer no-underline bg-green hover:bg-green-dark block w-full py-4 text-white items-center justify-center"/>
             
     </form>
 
@@ -31,6 +31,7 @@
           <button class="bg-tranparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 mr-2 rounded" @click.prevent="editDrug">Edit</button>
 
           <button class="bg-tranparent text-sm hover:bg-red text-red hover:text-white no-underline font-bold py-2 px-4 rounded border border-red" @click.prevent="removeDrug">Delete</button>
+        </div>
 
           <div v-if="drug == editedDrug">
             <form @submit.prevent="updateDrug(drug)">
@@ -47,6 +48,7 @@
 </template>
 
 <script>
+/* eslint-disable */
   export default {
     name: 'Drug',
     data () {
@@ -54,7 +56,7 @@
         drugs: [],
         newDrug: [],
         errors: '',
-        editDrug: ''
+        editedDrug: ''
       }
     },
     created () {
@@ -63,8 +65,7 @@
       } else {
         this.$http.secured.get('/api/v1/drugs')
           .then(response => { this.drugs = response.data })
-          .catch (error => this.setError(error, 'Ups! Something is not kosher.'))
-        
+          .catch(error => this.setError(error, 'Ups! Something is not kosher.'))
       }
     },
     methods: {
@@ -90,7 +91,7 @@
         })
         .catch(error => this.setError(error, 'Cannot delete drug.'))
       },
-      editDrug () {
+      editDrug (drug) {
         this.editedDrug = drug
       },
       updateDrug (drug) {
